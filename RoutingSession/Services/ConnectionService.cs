@@ -32,7 +32,7 @@ namespace RoutingSession.Services
             ClickAndWaitForPageToLoad(driver, By.ClassName("btn"));
         }
 
-        private  void ClickAndWaitForPageToLoad(IWebDriver driver, By elementLocator, int timeout = 10)
+        private void ClickAndWaitForPageToLoad(IWebDriver driver, By elementLocator, int timeout = 1000)
         {
             try
             {
@@ -56,10 +56,10 @@ namespace RoutingSession.Services
             }
         }
 
-        public  string fetchStatusPage()
+        public IEnumerable<IWebElement> fetchStatusPage()
         {
             driver.Navigate().GoToUrl(RouterUrl + "/#!/wireless-status");
-            return driver.PageSource.ToString();
+            return driver.FindElements(By.ClassName("Panel"));
         }
     }
 }

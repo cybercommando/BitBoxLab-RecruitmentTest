@@ -23,8 +23,9 @@ namespace RoutingSession
                 var connectionService = new ConnectionService(webDriver);
                 connectionService.PerformLogin("user", "tartu7777");
 
-                //Console.WriteLine(connectionService.fetchStatusPage());
-                System.Threading.Thread.Sleep(2000);
+                var data = connectionService.fetchStatusPage();
+                Console.WriteLine(data);
+                //System.Threading.Thread.Sleep(5000);
             }
             catch (Exception ex)
             {
