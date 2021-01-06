@@ -15,17 +15,23 @@ namespace RoutingSession
         {
             Console.WriteLine("Initiating...!!!");
             var webDriver = LaunchBrowser();
-
             //Code
             //=========================================================
             try
             {
                 var connectionService = new ConnectionService(webDriver);
+                System.Threading.Thread.Sleep(1000);
+                
                 connectionService.PerformLogin("user", "tartu7777");
+                System.Threading.Thread.Sleep(1000);
 
                 var data = connectionService.fetchStatusPage();
-                Console.WriteLine(data);
-                //System.Threading.Thread.Sleep(5000);
+
+                foreach (var item in data)
+                {
+                    Console.WriteLine(item.Text);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -49,6 +55,7 @@ namespace RoutingSession
             options.AddArgument("--disable-notifications");
 
             var driver = new ChromeDriver(Environment.CurrentDirectory, options);
+            driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(5);
             return driver;
         }
     }
