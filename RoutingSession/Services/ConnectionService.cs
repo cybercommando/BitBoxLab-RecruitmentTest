@@ -66,9 +66,10 @@ namespace RoutingSession.Services
             //}
 
             driver.Navigate().GoToUrl(RouterUrl + "/#!/wireless-status");
+            System.Threading.Thread.Sleep(5000);
             //return driver.FindElements(By.ClassName("ng-scope"));
             //return driver.FindElements(NgBy.Model("radio"));
-            return driver.FindElements(NgBy.ExactRepeater("radio in radios"));
+            return driver.FindElements(By.XPath(".//table"));
         }
     }
 }
