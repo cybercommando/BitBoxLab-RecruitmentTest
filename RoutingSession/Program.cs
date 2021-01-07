@@ -24,37 +24,20 @@ namespace RoutingSession
 
                 connectionService.PerformLogin("user", "tartu7777");
                 System.Threading.Thread.Sleep(1000);
+                
+                Console.Clear();
 
-                var data = connectionService.fetchStatusPage();
-
-                //Status Page Processing
-                foreach (var item in data)
+                while (true)
                 {
-                    Console.WriteLine("================================================");
-                    foreach (var i in item.FindElements(By.XPath(".//tr")))
+                    Console.WriteLine("--------------------------------------------------------------------");
+                    var data = connectionService.GetLiveDeviceList();
+
+                    Console.WriteLine("{0}\t\t{1}\t\t{2}\t\t{3}", "IP-Address", "MAC-Address", "Time (ms)", "Device Status");
+                    foreach (var item in data)
                     {
-                        if (i.GetAttribute("innerHTML").ToString().Contains("IP-Address"))
-                        {
-                            var tempData = i.FindElements(By.XPath(".//td//div"));
-                            Console.WriteLine("{0}:\t{1}", tempData[0].GetAttribute("innerHTML"), tempData[1].GetAttribute("innerHTML"));
-
-                            //Console.WriteLine(i.GetAttribute("innerHTML"));
-                        }
-                        else if (i.GetAttribute("innerHTML").ToString().Contains("MAC-Address"))
-                        {
-                            var tempData = i.FindElements(By.XPath(".//td//div"));
-                            Console.WriteLine("{0}:\t{1}", tempData[0].GetAttribute("innerHTML"), tempData[1].GetAttribute("innerHTML"));
-
-                        }
-                        else if (i.GetAttribute("innerHTML").ToString().Contains("In Network"))
-                        {
-                            var tempData = i.FindElements(By.XPath(".//td//div"));
-                            Console.WriteLine("{0} (Time in Seconds):\t{1}", tempData[0].GetAttribute("innerHTML"), tempData[1].GetAttribute("innerHTML"));
-                        }
-                        //Console.WriteLine(i.GetAttribute("innerHTML"));
+                        Console.WriteLine("{0}\t\t{1}\t\t{2}\t\t{3}", item.IpAddress, item.MacAddress, item.Time, item.status);
                     }
-                    Console.WriteLine("================================================");
-                    //Console.WriteLine(item.GetAttribute("innerHTML"));
+                    System.Threading.Thread.Sleep(60000);
                 }
 
             }
