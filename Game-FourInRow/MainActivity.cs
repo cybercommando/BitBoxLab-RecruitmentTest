@@ -22,8 +22,9 @@ namespace Game_FourInRow
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            ViewStub stub = FindViewById<ViewStub>(Resource.Id.main_layout_stub);
+            stub.LayoutResource = Resource.Layout.content_main;
+            stub.Inflate();
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
@@ -64,40 +65,18 @@ namespace Game_FourInRow
             return base.OnOptionsItemSelected(item);
         }
 
-        private void FabOnClick(object sender, EventArgs eventArgs)
-        {
-            View view = (View) sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-                .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
-        }
 
         public bool OnNavigationItemSelected(IMenuItem item)
         {
             int id = item.ItemId;
 
-            if (id == Resource.Id.nav_camera)
+            if (id == Resource.Id.nav_newGame)
             {
-                // Handle the camera action
+                // Handle the new game
             }
-            else if (id == Resource.Id.nav_gallery)
+            else if (id == Resource.Id.nav_Quit)
             {
-
-            }
-            else if (id == Resource.Id.nav_slideshow)
-            {
-
-            }
-            else if (id == Resource.Id.nav_manage)
-            {
-
-            }
-            else if (id == Resource.Id.nav_share)
-            {
-
-            }
-            else if (id == Resource.Id.nav_send)
-            {
-
+                this.FinishAffinity();
             }
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
