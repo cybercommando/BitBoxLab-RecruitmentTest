@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FourInRow.Views.MultiplayerPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
+                <Label Text="Player vs Player" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+            </Frame>
+
+            <Label Text="7x7 Grid" HorizontalTextAlignment="Center" FontSize="Large" VerticalOptions="Start" HorizontalOptions="CenterAndExpand"/>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" x:Name="Display" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Grid Grid.Row="1" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Text="New" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Green" HorizontalOptions="Center" WidthRequest="100" Clicked="New_Clicked"/>
+                    <Button Grid.Column="1" Text="Back" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Crimson" HorizontalOptions="Center" WidthRequest="100" Clicked="Back_Clicked"/>
+                </Grid>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

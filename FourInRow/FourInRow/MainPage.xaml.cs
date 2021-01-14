@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FourInRow.Views;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,16 +16,14 @@ namespace FourInRow
             InitializeComponent();
         }
 
-        Library library = new Library();
-
-        private void New_Clicked(object sender, EventArgs e)
+        private void PvP_Clicked(object sender, EventArgs e)
         {
-            library.New(this, Display);
+            Application.Current.MainPage = new MultiplayerPage();
         }
 
-        private void Exit_Clicked(object sender, EventArgs e)
+        private void CvP_Clicked(object sender, EventArgs e)
         {
-            //Not Implemented Yet
+            Application.Current.MainPage = new ComplayerPage();
         }
     }
 }

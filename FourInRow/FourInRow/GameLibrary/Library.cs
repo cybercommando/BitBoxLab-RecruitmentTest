@@ -5,9 +5,9 @@ public class Library
 {
     private const string app_title = "Four In A Row !!!";
     private const char blank = ' ';
-    private const char nought = 'R';
-    private const char cross = 'B';
-    private const int size = 8;
+    private const char Red = 'R';
+    private const char Blue = 'B';
+    private const int size = 7;
 
     private ContentPage _page;
     private bool _won = false;
@@ -21,20 +21,37 @@ public class Library
         });
     }
 
-    private async Task<bool> ConfirmAsync(string content,
-        string title, string ok, string cancel)
+    private async Task<bool> ConfirmAsync(string content, string title, string ok, string cancel)
     {
         return await _page.DisplayAlert(title, content, ok, cancel);
     }
 
+
     private bool Winner()
     {
         return false;
+        //return checkVertical(_board, _piece)
+        //  || checkHorizontal(_board, _piece)
+        //  || checkDiagonal1(_board, _piece)
+        //  || checkDiagonal2(_board, _piece);
     }
 
     private bool Drawn()
     {
         return false;
+        //bool decision = false;
+        //for (int i = 0; i < size; i++)
+        //{
+        //    for (int j = 0; j < size; j++)
+        //    {
+        //        if (_board[i, j] == blank)
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
+
+        //return decision;
     }
 
     private Grid Piece()
@@ -44,11 +61,11 @@ public class Library
             HeightRequest = 30,
             WidthRequest = 30,
         };
-        if (_piece == cross)
+        if (_piece == Blue)
         {
             BoxView Dot = new BoxView()
             {
-                Color = Color.Red,
+                Color = Color.Blue,
                 HeightRequest = 20,
                 WidthRequest = 20,
                 VerticalOptions = LayoutOptions.Center,
@@ -57,11 +74,11 @@ public class Library
             };
             grid.Children.Add(Dot);
         }
-        else if (_piece == nought)
+        else if (_piece == Red)
         {
             BoxView Dot = new BoxView()
             {
-                Color = Color.Black,
+                Color = Color.Red,
                 HeightRequest = 20,
                 WidthRequest = 20,
                 VerticalOptions = LayoutOptions.Center,
@@ -80,7 +97,7 @@ public class Library
             HeightRequest = 30,
             WidthRequest = 30,
             Margin = new Thickness(0.1),
-            BackgroundColor = Color.WhiteSmoke,
+            BackgroundColor = Color.WhiteSmoke
         };
         TapGestureRecognizer tapped = new TapGestureRecognizer();
         tapped.Tapped += (sender, e) =>
@@ -105,7 +122,7 @@ public class Library
                     }
                     else
                     {
-                        _piece = (_piece == cross ? nought : cross); // Swap Players
+                        _piece = (_piece == Blue ? Red : Blue); // Swap Players
                     }
                 }
             }
@@ -147,7 +164,58 @@ public class Library
         _page = page;
         Layout(ref grid);
         _won = false;
-        _piece = await ConfirmAsync("Who goes First?", app_title,
-            nought.ToString(), cross.ToString()) ? nought : cross;
+        _piece = await ConfirmAsync("Who goes First?", app_title, "Red", "Blue") ? Red : Blue;
     }
+
+    //#region GameLogic
+    //private bool checkVertical(char[,] field, char player)
+    //{
+    //    for (int i = 0; i < size; ++i)
+    //    {
+    //        if (field[0][i] == player
+    //            && field[1][i] == player
+    //            && field[2][i] == player
+    //            && field[3][i] == player
+    //        ) return true;
+
+    //        if (field[1][i] == player
+    //            && field[2][i] == player
+    //            && field[3][i] == player
+    //            && field[4][i] == player
+    //        ) return true;
+    //    }
+    //    return false;
+    //}
+
+    //private bool checkHorizontal(char[,] field, char player)
+    //{
+    //    for (i = 0; i < 5; ++i)
+    //    {
+    //        if (field[i][0] == player
+    //            && field[i][1] == player
+    //            && field[i][2] == player
+    //            && field[i][3] == player
+    //        ) return true;
+
+    //        if (field[i][1] === player
+    //            && field[i][2] == player
+    //            && field[i][3] == player
+    //            && field[i][4] == player
+    //        ) return true;
+    //    }
+    //    return false;
+    //}
+
+    //private bool checkDiagonal1(char[,] field, char player)
+    //{
+    //    // exercise for the reader
+    //    return false;
+    //}
+
+    //private bool checkDiagonal2(char[,] field, char player)
+    //{
+    //    // exercise for the reader
+    //    return false;
+    //}
+    //#endregion
 }
