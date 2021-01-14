@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoutingSession", "RoutingSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sort Benchmark", "Sort Benchmark\Sort Benchmark.csproj", "{08A8EDCF-5ACF-4C64-BE5B-CC93AAC68BB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game-FourInRow", "Game-FourInRow\Game-FourInRow.csproj", "{665C2A4C-9951-42BE-A8CA-560043C748E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FourInRow.Android", "FourInRow\FourInRow.Android\FourInRow.Android.csproj", "{8E23A459-6A33-4EFA-8ACB-48B1537201A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FourInRow", "FourInRow\FourInRow\FourInRow.csproj", "{4FF1CF6F-E4F1-4519-91CC-1D21DA42053C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +25,16 @@ Global
 		{08A8EDCF-5ACF-4C64-BE5B-CC93AAC68BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08A8EDCF-5ACF-4C64-BE5B-CC93AAC68BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08A8EDCF-5ACF-4C64-BE5B-CC93AAC68BB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{665C2A4C-9951-42BE-A8CA-560043C748E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{665C2A4C-9951-42BE-A8CA-560043C748E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{665C2A4C-9951-42BE-A8CA-560043C748E9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{665C2A4C-9951-42BE-A8CA-560043C748E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{665C2A4C-9951-42BE-A8CA-560043C748E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{665C2A4C-9951-42BE-A8CA-560043C748E9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8E23A459-6A33-4EFA-8ACB-48B1537201A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E23A459-6A33-4EFA-8ACB-48B1537201A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E23A459-6A33-4EFA-8ACB-48B1537201A9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8E23A459-6A33-4EFA-8ACB-48B1537201A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E23A459-6A33-4EFA-8ACB-48B1537201A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E23A459-6A33-4EFA-8ACB-48B1537201A9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{4FF1CF6F-E4F1-4519-91CC-1D21DA42053C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FF1CF6F-E4F1-4519-91CC-1D21DA42053C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FF1CF6F-E4F1-4519-91CC-1D21DA42053C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FF1CF6F-E4F1-4519-91CC-1D21DA42053C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
