@@ -20,7 +20,7 @@ namespace FourInRow.GameLibrary
                 || checkCounterDiagonal(_board, player);
         }
 
-        public static bool Drawn(char[,] _board, char player)
+        public static bool Drawn(char[,] _board)
         {
             int boardSize = _board.GetLength(0);
             bool decision = true;

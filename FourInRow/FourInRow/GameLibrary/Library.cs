@@ -1,4 +1,5 @@
 ﻿using FourInRow.GameLibrary;
+using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -32,19 +33,19 @@ public class Library
     {
         Grid grid = new Grid()
         {
-            HeightRequest = 30,
-            WidthRequest = 30,
+            HeightRequest = 40,
+            WidthRequest = 40,
         };
         if (_player == Blue)
         {
             BoxView Dot = new BoxView()
             {
                 Color = Color.Blue,
-                HeightRequest = 20,
-                WidthRequest = 20,
+                HeightRequest = 30,
+                WidthRequest = 30,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
-                CornerRadius = 10
+                CornerRadius = 15
             };
             grid.Children.Add(Dot);
         }
@@ -53,58 +54,155 @@ public class Library
             BoxView Dot = new BoxView()
             {
                 Color = Color.Red,
-                HeightRequest = 20,
-                WidthRequest = 20,
+                HeightRequest = 30,
+                WidthRequest = 30,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
-                CornerRadius = 10
+                CornerRadius = 15
             };
             grid.Children.Add(Dot);
         }
         return grid;
     }
 
+    private void Grid_Tapped(object sender, EventArgs e)
+    {
+        if (!_won)
+        {
+            Grid element = (Grid)sender;
+            if ((element.Children.Count < 1))
+            {
+                int ElemRow = (int)element.GetValue(Grid.RowProperty);
+                int ElemCol = (int)element.GetValue(Grid.ColumnProperty);
+                int ElemIndex = (ElemRow * size) + ElemCol;
+
+                //Step1: Add Piece
+                element.Children.Add(Piece());
+
+                //Step2: Check Next
+                int prevIndex = ElemIndex;
+                int nextElemRow = ElemRow + 1;
+                int nextIndex = ElemIndex + size;
+                for (int a = nextElemRow; a < size; a++)
+                {
+                    if (((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Count > 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        //Remove Previous
+                        ((Grid)((Grid)element.Parent).Children[prevIndex]).Children.Clear();
+                        //Add New
+                        ((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Add(Piece());
+                        prevIndex = nextIndex;
+                        nextElemRow = a;
+                    }
+
+                    nextIndex = nextIndex + size;
+                }
+
+                //StepLast: Add in Board
+                //_board[ElemRow, ElemCol] = _player;
+                _board[nextElemRow, ElemCol] = _player;
+
+                //-----------------------------------------------------------------------
+
+                
+
+                //Grid elm = new Grid()
+                //{
+                //    HeightRequest = 40,
+                //    WidthRequest = 40,
+                //    Margin = new Thickness(0.1),
+                //    BackgroundColor = Color.WhiteSmoke
+                //};
+                //TapGestureRecognizer tapped = new TapGestureRecognizer();
+                //tapped.Tapped += Grid_Tapped;
+                //elm.GestureRecognizers.Add(tapped);
+                //elm.SetValue(Grid.ColumnProperty, (int)element.GetValue(Grid.ColumnProperty));
+                //elm.SetValue(Grid.RowProperty, (int)element.GetValue(Grid.RowProperty) + 1);
+                //elm.Children.Add(Piece());
+                //((Grid)element.Parent).Children.Add(elm);
+
+                //int i = (int)element.GetValue(Grid.RowProperty) + 1;
+                //while (i < size)
+                //{
+                //    if (((Grid)((Grid)element.Parent).Children[i + size]).Children.Count <= 0)
+                //    {
+                //        ((Grid)((Grid)element.Parent).Children[i + size]).Children.Add(Piece());
+                //    }
+                //    else
+                //    {
+                //        break;
+                //    }
+                //}
+
+                //var y = ((Grid)((Grid)element.Parent).Children[0]).Children.Count;
+                
+                //((Grid)((Grid)element.Parent).Children[1]).Children.Count
+                //Animation Algorithm
+                //int i = (int)element.GetValue(Grid.RowProperty) + 1;
+                //do
+                //{
+                //    Grid elm = new Grid()
+                //    {
+                //        HeightRequest = 40,
+                //        WidthRequest = 40,
+                //        Margin = new Thickness(0.1),
+                //        BackgroundColor = Color.WhiteSmoke
+                //    };
+
+                //    TapGestureRecognizer tapped = new TapGestureRecognizer();
+                //    tapped.Tapped += Grid_Tapped;
+
+                //    elm.GestureRecognizers.Add(tapped);
+                //    elm.SetValue(Grid.ColumnProperty, (int)element.GetValue(Grid.ColumnProperty));
+                //    //elm.SetValue(Grid.RowProperty, (int)element.GetValue(Grid.RowProperty) + 1);
+                //    elm.SetValue(Grid.RowProperty, i);
+                //    elm.Children.Add(Piece());
+                //    ((Grid)element.Parent).Children.Add(elm);
+
+                //    i++;
+                //} while (i < size);
+                //
+
+
+                //-----------------------------------------------------------------------
+                if (FourInRowLogic.Winner(_board, _player))
+                {
+                    _won = true;
+                    Show($"{_player} wins!", app_title);
+                }
+                else if (FourInRowLogic.Drawn(_board))
+                {
+                    Show("Draw!", app_title);
+                }
+                else
+                {
+                    _player = (_player == Blue ? Red : Blue); // Swap Players
+                }
+            }
+        }
+        else
+        {
+            Show("Game Over!", app_title);
+        }
+    }
+
     private void Add(ref Grid grid, int row, int column)
     {
         Grid element = new Grid()
         {
-            HeightRequest = 30,
-            WidthRequest = 30,
+            HeightRequest = 40,
+            WidthRequest = 40,
             Margin = new Thickness(0.1),
             BackgroundColor = Color.WhiteSmoke
         };
-        TapGestureRecognizer tapped = new TapGestureRecognizer();
-        tapped.Tapped += (sender, e) =>
-        {
-            if (!_won)
-            {
-                element = (Grid)sender;
-                if ((element.Children.Count < 1))
-                {
-                    element.Children.Add(Piece());
-                    _board[(int)element.GetValue(Grid.RowProperty),
-                    (int)element.GetValue(Grid.ColumnProperty)] = _player;
 
-                    if (FourInRowLogic.Winner(_board, _player))
-                    {
-                        _won = true;
-                        Show($"{_player} wins!", app_title);
-                    }
-                    else if (FourInRowLogic.Drawn(_board, _player))
-                    {
-                        Show("Draw!", app_title);
-                    }
-                    else
-                    {
-                        _player = (_player == Blue ? Red : Blue); // Swap Players
-                    }
-                }
-            }
-            else
-            {
-                Show("Game Over!", app_title);
-            }
-        };
+        TapGestureRecognizer tapped = new TapGestureRecognizer();
+        tapped.Tapped += Grid_Tapped;
+
         element.GestureRecognizers.Add(tapped);
         element.SetValue(Grid.ColumnProperty, column);
         element.SetValue(Grid.RowProperty, row);
