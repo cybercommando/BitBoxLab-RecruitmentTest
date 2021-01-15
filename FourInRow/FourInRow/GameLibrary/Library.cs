@@ -85,12 +85,12 @@ public class Library
                     _board[(int)element.GetValue(Grid.RowProperty),
                     (int)element.GetValue(Grid.ColumnProperty)] = _player;
 
-                    if (FourInRowLogic.Winner(_board, size, _player))
+                    if (FourInRowLogic.Winner(_board, _player))
                     {
                         _won = true;
                         Show($"{_player} wins!", app_title);
                     }
-                    else if (FourInRowLogic.Drawn(_board, size, _player))
+                    else if (FourInRowLogic.Drawn(_board, _player))
                     {
                         Show("Draw!", app_title);
                     }

@@ -11,17 +11,18 @@ namespace FourInRow.GameLibrary
         // Game Decision
         //===========================================================
 
-        public static bool Winner(char[,] _board, int boardSize, char player)
+        public static bool Winner(char[,] _board, char player)
         {
             return
-                checkVertical(_board, boardSize, player)
-                || checkHorizontal(_board, boardSize, player)
-                || checkDiagonal1(_board, boardSize, player)
-                || checkDiagonal2(_board, boardSize, player);
+                checkRows(_board, player)
+                || checkColumns(_board, player)
+                || checkMainDiagonal(_board, player)
+                || checkCounterDiagonal(_board, player);
         }
 
-        public static bool Drawn(char[,] _board, int boardSize, char player)
+        public static bool Drawn(char[,] _board, char player)
         {
+            int boardSize = _board.GetLength(0);
             bool decision = true;
             for (int i = 0; i < boardSize; i++)
             {
@@ -39,75 +40,79 @@ namespace FourInRow.GameLibrary
         //===========================================================
         // Game Logic
         //===========================================================
-        private static bool checkVertical(char[,] field, int boardSize, char player)
+        private static bool checkRows(char[,] _board, char player)
         {
-            for (int i = 0; i < boardSize; i++)
+            int boardSize = _board.GetLength(0);
+            for (int row = 0; row < boardSize; row++)
             {
-                if (field[0, i] == player
-                    && field[1, i] == player
-                    && field[2, i] == player
-                    && field[3, i] == player
-                ) return true;
-
-                if (field[1, i] == player
-                    && field[2, i] == player
-                    && field[3, i] == player
-                    && field[4, i] == player
-                ) return true;
-
-                if (field[2, i] == player
-                    && field[3, i] == player
-                    && field[4, i] == player
-                    && field[5, i] == player
-                ) return true;
-
-                if (field[3, i] == player
-                    && field[4, i] == player
-                    && field[5, i] == player
-                    && field[6, i] == player
-                ) return true;
+                for (int col = 0; col < boardSize - 3; col++)
+                {
+                    if (player == _board[row, col] &&
+                        player == _board[row, col + 1] &&
+                        player == _board[row, col + 2] &&
+                        player == _board[row, col + 3])
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }
 
-        private static bool checkHorizontal(char[,] field, int boardSize, char player)
+        private static bool checkColumns(char[,] _board, char player)
         {
-            for (int i = 0; i < boardSize; i++)
+            int boardSize = _board.GetLength(0);
+            for (int row = 0; row < boardSize - 3; row++)
             {
-                if (field[i, 0] == player
-                    && field[i, 1] == player
-                    && field[i, 2] == player
-                    && field[i, 3] == player
-                ) return true;
-
-                if (field[i, 1] == player
-                    && field[i, 2] == player
-                    && field[i, 3] == player
-                    && field[i, 4] == player
-                ) return true;
-
-                if (field[i, 2] == player
-                    && field[i, 3] == player
-                    && field[i, 4] == player
-                    && field[i, 5] == player
-                ) return true;
-
-                if (field[i, 3] == player
-                    && field[i, 4] == player
-                    && field[i, 5] == player
-                    && field[i, 6] == player
-                ) return true;
+                for (int col = 0; col < boardSize; col++)
+                {
+                    if (player == _board[row, col] &&
+                        player == _board[row + 1,col] &&
+                        player == _board[row + 2,col] &&
+                        player == _board[row + 3,col])
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }
 
-        private static bool checkDiagonal1(char[,] field, int boardSize, char player)
+        private static bool checkMainDiagonal(char[,] _board, char player)
         {
+            int boardSize = _board.GetLength(0);
+            for (int row = 0; row < boardSize - 3; row++)
+            {
+                for (int col = 0; col < boardSize - 3; col++)
+                {
+                    if (player == _board[row, col] &&
+                        player == _board[row + 1, col + 1] &&
+                        player == _board[row + 2, col + 2] &&
+                        player == _board[row + 3, col + 3])
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
-        private static bool checkDiagonal2(char[,] field, int boardSize, char player)
+        private static bool checkCounterDiagonal(char[,] _board, char player)
         {
+            int boardSize = _board.GetLength(0);
+            for (int row = 0; row < boardSize - 3; row++)
+            {
+                for (int col = 3; col < boardSize; col++)
+                {
+                    if (player == _board[row, col] &&
+                        player == _board[row + 1, col - 1] &&
+                        player == _board[row + 2, col - 2] &&
+                        player == _board[row + 3, col - 3])
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
     }
