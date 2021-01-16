@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FourInRow.GameLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,9 +18,11 @@ namespace FourInRow.Views
             InitializeComponent();
         }
 
+        ComplayerLibrary library = new ComplayerLibrary();
+
         private void New_Clicked(object sender, EventArgs e)
         {
-            //Not Implemented Yet
+            library.New(this, Display, PlayerTurn, PlayerWin);
         }
 
         private void Back_Clicked(object sender, EventArgs e)

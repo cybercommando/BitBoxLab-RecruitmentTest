@@ -1,9 +1,9 @@
-﻿using System;
+﻿using FourInRow.GameLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,7 +17,7 @@ namespace FourInRow.Views
             InitializeComponent();
         }
 
-        Library library = new Library();
+        MultiplayerLibrary library = new MultiplayerLibrary();
 
         private void New_Clicked(object sender, EventArgs e)
         {
