@@ -1,6 +1,7 @@
 ﻿using FourInRow.GameLibrary;
 using System;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 public class Library
@@ -67,7 +68,7 @@ public class Library
         return grid;
     }
 
-    private void Grid_Tapped(object sender, EventArgs e)
+    private async void Grid_Tapped(object sender, EventArgs e)
     {
         if (!_won)
         {
@@ -79,7 +80,10 @@ public class Library
                 int ElemIndex = (ElemRow * size) + ElemCol;
 
                 //Step1: Add Piece
-                element.Children.Add(Piece());
+                MainThread.BeginInvokeOnMainThread(()=> {
+                    element.Children.Add(Piece());
+                });
+                await Task.Delay(1);
                 bool firstClicked = true;
 
                 //Step2: Check Next
@@ -97,10 +101,15 @@ public class Library
                     {
                         firstClicked = false;
                         //Remove Previous
-                        ((Grid)((Grid)element.Parent).Children[prevIndex]).Children.Clear();
+                        MainThread.BeginInvokeOnMainThread(() => {
+                            ((Grid)((Grid)element.Parent).Children[prevIndex]).Children.Clear();
+                        });
 
                         //Add New
-                        ((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Add(Piece());
+                        MainThread.BeginInvokeOnMainThread(() => {
+                            ((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Add(Piece());
+                        });
+                        await Task.Delay(1);
 
                         prevIndex = nextIndex;
                         nextElemRow = a;
