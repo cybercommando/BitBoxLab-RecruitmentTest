@@ -12,6 +12,8 @@ public class Library
     private const int size = 7;
 
     private ContentPage _page;
+    private Label _PlayerTurn;
+    private Label _PlayerWin;
     private bool _won = false;
     private char _player = blank;
     private char[,] _board = new char[size, size];
@@ -53,7 +55,7 @@ public class Library
         {
             BoxView Dot = new BoxView()
             {
-                Color = Color.Red,
+                Color = Color.Crimson,
                 HeightRequest = 30,
                 WidthRequest = 30,
                 VerticalOptions = LayoutOptions.Center,
@@ -78,6 +80,7 @@ public class Library
 
                 //Step1: Add Piece
                 element.Children.Add(Piece());
+                bool firstClicked = true;
 
                 //Step2: Check Next
                 int prevIndex = ElemIndex;
@@ -85,16 +88,20 @@ public class Library
                 int nextIndex = ElemIndex + size;
                 for (int a = nextElemRow; a < size; a++)
                 {
+                    //Checking next in Row (If next already have value then ignore)
                     if (((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Count > 0)
                     {
                         break;
                     }
                     else
                     {
+                        firstClicked = false;
                         //Remove Previous
                         ((Grid)((Grid)element.Parent).Children[prevIndex]).Children.Clear();
+
                         //Add New
                         ((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Add(Piece());
+
                         prevIndex = nextIndex;
                         nextElemRow = a;
                     }
@@ -103,84 +110,27 @@ public class Library
                 }
 
                 //StepLast: Add in Board
-                //_board[ElemRow, ElemCol] = _player;
-                _board[nextElemRow, ElemCol] = _player;
-
-                //-----------------------------------------------------------------------
-
-                
-
-                //Grid elm = new Grid()
-                //{
-                //    HeightRequest = 40,
-                //    WidthRequest = 40,
-                //    Margin = new Thickness(0.1),
-                //    BackgroundColor = Color.WhiteSmoke
-                //};
-                //TapGestureRecognizer tapped = new TapGestureRecognizer();
-                //tapped.Tapped += Grid_Tapped;
-                //elm.GestureRecognizers.Add(tapped);
-                //elm.SetValue(Grid.ColumnProperty, (int)element.GetValue(Grid.ColumnProperty));
-                //elm.SetValue(Grid.RowProperty, (int)element.GetValue(Grid.RowProperty) + 1);
-                //elm.Children.Add(Piece());
-                //((Grid)element.Parent).Children.Add(elm);
-
-                //int i = (int)element.GetValue(Grid.RowProperty) + 1;
-                //while (i < size)
-                //{
-                //    if (((Grid)((Grid)element.Parent).Children[i + size]).Children.Count <= 0)
-                //    {
-                //        ((Grid)((Grid)element.Parent).Children[i + size]).Children.Add(Piece());
-                //    }
-                //    else
-                //    {
-                //        break;
-                //    }
-                //}
-
-                //var y = ((Grid)((Grid)element.Parent).Children[0]).Children.Count;
-                
-                //((Grid)((Grid)element.Parent).Children[1]).Children.Count
-                //Animation Algorithm
-                //int i = (int)element.GetValue(Grid.RowProperty) + 1;
-                //do
-                //{
-                //    Grid elm = new Grid()
-                //    {
-                //        HeightRequest = 40,
-                //        WidthRequest = 40,
-                //        Margin = new Thickness(0.1),
-                //        BackgroundColor = Color.WhiteSmoke
-                //    };
-
-                //    TapGestureRecognizer tapped = new TapGestureRecognizer();
-                //    tapped.Tapped += Grid_Tapped;
-
-                //    elm.GestureRecognizers.Add(tapped);
-                //    elm.SetValue(Grid.ColumnProperty, (int)element.GetValue(Grid.ColumnProperty));
-                //    //elm.SetValue(Grid.RowProperty, (int)element.GetValue(Grid.RowProperty) + 1);
-                //    elm.SetValue(Grid.RowProperty, i);
-                //    elm.Children.Add(Piece());
-                //    ((Grid)element.Parent).Children.Add(elm);
-
-                //    i++;
-                //} while (i < size);
-                //
-
+                if (firstClicked)
+                    _board[ElemRow, ElemCol] = _player;
+                else
+                    _board[nextElemRow, ElemCol] = _player;
 
                 //-----------------------------------------------------------------------
                 if (FourInRowLogic.Winner(_board, _player))
                 {
                     _won = true;
                     Show($"{_player} wins!", app_title);
+                    PlayerWinningStatus();
                 }
                 else if (FourInRowLogic.Drawn(_board))
                 {
                     Show("Draw!", app_title);
+                    PlayerWinningStatus();
                 }
                 else
                 {
                     _player = (_player == Blue ? Red : Blue); // Swap Players
+                    PlayerTurnShift();
                 }
             }
         }
@@ -214,6 +164,8 @@ public class Library
         grid.Children.Clear();
         grid.ColumnDefinitions.Clear();
         grid.RowDefinitions.Clear();
+        _PlayerTurn.Text = "";
+        _PlayerWin.Text = "";
         // Setup Grid
         for (int index = 0; (index < size); index++)
         {
@@ -231,12 +183,42 @@ public class Library
         }
     }
 
-    public async void New(ContentPage page, Grid grid)
+    public async void New(ContentPage page, Grid grid, Label playerTurnLabel, Label playerWinLabel)
     {
         _page = page;
+        _PlayerTurn = playerTurnLabel;
+        _PlayerWin = playerWinLabel;
         Layout(ref grid);
         _won = false;
         _player = await ConfirmAsync("Who goes First?", app_title, "Red", "Blue") ? Red : Blue;
+        PlayerTurnShift();
     }
 
+    private void PlayerTurnShift()
+    {
+        if (_player == Blue)
+        {
+            _PlayerTurn.Text = "BLUE";
+            _PlayerTurn.BackgroundColor = Color.Blue;
+        }
+        else
+        {
+            _PlayerTurn.Text = "RED";
+            _PlayerTurn.BackgroundColor = Color.Crimson;
+        }
+    }
+
+    private void PlayerWinningStatus()
+    {
+        if (_won)
+        {
+            _PlayerWin.Text = (_player == Blue) ? "BLUE WINS" : "RED WINS";
+            _PlayerWin.TextColor = (_player == Blue) ? Color.Blue : Color.Crimson;
+        }
+        else
+        {
+            _PlayerWin.Text = "GAME DRAW";
+            _PlayerWin.TextColor = Color.Gray;
+        }
+    }
 }

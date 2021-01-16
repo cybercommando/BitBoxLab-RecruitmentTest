@@ -21,7 +21,7 @@ namespace FourInRow.Views
 
         private void New_Clicked(object sender, EventArgs e)
         {
-            library.New(this, Display);
+            library.New(this, Display, PlayerTurn, PlayerWin);
         }
 
         private void Back_Clicked(object sender, EventArgs e)

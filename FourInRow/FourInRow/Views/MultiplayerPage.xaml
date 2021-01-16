@@ -4,11 +4,20 @@
              x:Class="FourInRow.Views.MultiplayerPage">
     <ContentPage.Content>
         <StackLayout>
-            <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
+            <Frame BackgroundColor="Green" Padding="24" CornerRadius="0">
                 <Label Text="Player vs Player" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
             </Frame>
 
-            <Label Text="7x7 Grid" HorizontalTextAlignment="Center" FontSize="Large" VerticalOptions="Start" HorizontalOptions="CenterAndExpand"/>
+            <Grid Grid.Row="0" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Player Turn:" Padding="5" Grid.Column="0" HorizontalTextAlignment="Start" FontSize="Medium" VerticalOptions="Start" HorizontalOptions="CenterAndExpand"/>
+                <Label x:Name="PlayerTurn" Padding="5" Grid.Column="1" HorizontalTextAlignment="End" FontSize="Medium" VerticalOptions="Start" HorizontalOptions="CenterAndExpand"/>
+                
+            </Grid>
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -16,15 +25,16 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" x:Name="Display" HorizontalOptions="Center" VerticalOptions="Center"/>
-                <Grid Grid.Row="1" Margin="10">
+                <Grid Grid.Row="1" Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Text="New" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Green" HorizontalOptions="Center" WidthRequest="100" Clicked="New_Clicked"/>
-                    <Button Grid.Column="1" Text="Back" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Crimson" HorizontalOptions="Center" WidthRequest="100" Clicked="Back_Clicked"/>
+                    <Button Grid.Column="0" Text="New" CornerRadius="25" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Green" HorizontalOptions="Center" WidthRequest="100" Clicked="New_Clicked"/>
+                    <Button Grid.Column="1" Text="Back" CornerRadius="25" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Green" HorizontalOptions="Center" WidthRequest="100" Clicked="Back_Clicked"/>
                 </Grid>
             </Grid>
+            <Label x:Name="PlayerWin" HorizontalTextAlignment="Center" FontSize="Title" VerticalOptions="End" HorizontalOptions="CenterAndExpand"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -20,8 +20,9 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Button Grid.Row="0" Text="Player vs Player" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Green" HorizontalOptions="Center" WidthRequest="200" Clicked="PvP_Clicked"/>
-                <Button Grid.Row="1" Text="Computer vs Player" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Crimson" HorizontalOptions="Center" WidthRequest="200" Clicked="CvP_Clicked"/>
+                <Button Grid.Row="0" Text="Computer vs Player" FontSize="Large" CornerRadius="50" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Crimson" HorizontalOptions="Center" WidthRequest="300" HeightRequest="100" Clicked="CvP_Clicked"/>
+                <Button Grid.Row="1" Text="Player vs Player &#x0a; (OFFLINE)" FontSize="Large" CornerRadius="50" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="Green" HorizontalOptions="Center" WidthRequest="300" HeightRequest="100" Clicked="PvP_Clicked"/>
+                <Button Grid.Row="2" Text="Player vs Player &#x0a; (ONLINE)" FontSize="Large" CornerRadius="50" BorderWidth="1" BorderColor="Black" BackgroundColor="WhiteSmoke" TextColor="#2196F3" HorizontalOptions="Center" WidthRequest="300" HeightRequest="100" Clicked="PvP_Online_Clicked"/>
 
             </Grid>
         </Grid>

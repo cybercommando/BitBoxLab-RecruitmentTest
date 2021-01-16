@@ -21,6 +21,11 @@ namespace FourInRow
             Application.Current.MainPage = new MultiplayerPage();
         }
 
+        private void PvP_Online_Clicked(object sender, EventArgs e)
+        {
+            //Comming Soon
+        }
+
         private void CvP_Clicked(object sender, EventArgs e)
         {
             Application.Current.MainPage = new ComplayerPage();
