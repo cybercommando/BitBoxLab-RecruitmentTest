@@ -18,6 +18,7 @@ namespace FourInRow.GameLibrary
         private Label _PlayerWin;
         private bool _won = false;
         private char _player = blank;
+        private char _YourColor = blank;
         private char[,] _board = new char[size, size];
 
         public void Show(string content, string title)
@@ -90,77 +91,75 @@ namespace FourInRow.GameLibrary
             if (!_won)
             {
                 Grid element = (Grid)sender;
-                if ((element.Children.Count < 1))
+
+                int ElemRow = _Row;
+                int ElemCol = _Col;
+                int ElemIndex = (ElemRow * size) + ElemCol;
+
+                //Step1: Add Piece
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    int ElemRow = _Row;
-                    int ElemCol = _Col;
-                    int ElemIndex = (ElemRow * size) + ElemCol;
+                    ((Grid)((Grid)element.Parent).Children[ElemIndex]).Children.Add(Piece());
+                });
+                await Task.Delay(1);
+                bool firstClicked = true;
 
-                    //Step1: Add Piece
-                    MainThread.BeginInvokeOnMainThread(() =>
+                //Step2: Check Next
+                int prevIndex = ElemIndex;
+                int nextElemRow = ElemRow + 1;
+                int nextIndex = ElemIndex + size;
+                for (int a = nextElemRow; a < size; a++)
+                {
+                    //Checking next in Row (If next already have value then ignore)
+                    if (((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Count > 0)
                     {
-                        ((Grid)((Grid)element.Parent).Children[ElemIndex]).Children.Add(Piece());
-                    });
-                    await Task.Delay(1);
-                    bool firstClicked = true;
-
-                    //Step2: Check Next
-                    int prevIndex = ElemIndex;
-                    int nextElemRow = ElemRow + 1;
-                    int nextIndex = ElemIndex + size;
-                    for (int a = nextElemRow; a < size; a++)
-                    {
-                        //Checking next in Row (If next already have value then ignore)
-                        if (((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Count > 0)
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            firstClicked = false;
-                            //Remove Previous
-                            MainThread.BeginInvokeOnMainThread(() =>
-                            {
-                                ((Grid)((Grid)element.Parent).Children[prevIndex]).Children.Clear();
-                            });
-
-                            //Add New
-                            MainThread.BeginInvokeOnMainThread(() =>
-                            {
-                                ((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Add(Piece());
-                            });
-                            await Task.Delay(1);
-
-                            prevIndex = nextIndex;
-                            nextElemRow = a;
-                        }
-
-                        nextIndex += size;
-                    }
-
-                    //StepLast: Add in Board
-                    if (firstClicked)
-                        _board[ElemRow, ElemCol] = _player;
-                    else
-                        _board[nextElemRow, ElemCol] = _player;
-
-                    //-----------------------------------------------------------------------
-                    if (FourInRowLogic.Winner(_board, _player))
-                    {
-                        _won = true;
-                        Show($"{_player} wins!", app_title);
-                        PlayerWinningStatus();
-                    }
-                    else if (FourInRowLogic.Drawn(_board))
-                    {
-                        Show("Draw!", app_title);
-                        PlayerWinningStatus();
+                        break;
                     }
                     else
                     {
-                        _player = (_player == Blue ? Red : Blue); // Swap Players
-                        PlayerTurnShift();
+                        firstClicked = false;
+                        //Remove Previous
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            ((Grid)((Grid)element.Parent).Children[prevIndex]).Children.Clear();
+                        });
+
+                        //Add New
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            ((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Add(Piece());
+                        });
+                        await Task.Delay(1);
+
+                        prevIndex = nextIndex;
+                        nextElemRow = a;
                     }
+
+                    nextIndex += size;
+                }
+
+                //StepLast: Add in Board
+                if (firstClicked)
+                    _board[ElemRow, ElemCol] = _player;
+                else
+                    _board[nextElemRow, ElemCol] = _player;
+
+                //-----------------------------------------------------------------------
+                if (FourInRowLogic.Winner(_board, _player))
+                {
+                    _won = true;
+                    Show($"{_player} wins!", app_title);
+                    PlayerWinningStatus();
+                }
+                else if (FourInRowLogic.Drawn(_board))
+                {
+                    Show("Draw!", app_title);
+                    PlayerWinningStatus();
+                }
+                else
+                {
+                    _player = (_player == Blue ? Red : Blue); // Swap Players
+                    PlayerTurnShift();
                 }
             }
             else
@@ -245,6 +244,7 @@ namespace FourInRow.GameLibrary
                     {
                         _player = (_player == Blue ? Red : Blue); // Swap Players
                         PlayerTurnShift();
+                        await Task.Delay(100);
                         AutoTurnExecute(sender);
                     }
                 }
@@ -305,7 +305,8 @@ namespace FourInRow.GameLibrary
             _PlayerWin = playerWinLabel;
             Layout(ref grid);
             _won = false;
-            _player = await ConfirmAsync("Who goes First?", app_title, "Red", "Blue") ? Red : Blue;
+            _player = await ConfirmAsync("Choose Your Color", app_title, "Red", "Blue") ? Red : Blue;
+            _YourColor = _player;
             PlayerTurnShift();
         }
 
@@ -327,7 +328,7 @@ namespace FourInRow.GameLibrary
         {
             if (_won)
             {
-                _PlayerWin.Text = (_player == Blue) ? "BLUE WINS" : "RED WINS";
+                _PlayerWin.Text = (_player == _YourColor) ? "YOU WIN" : "YOU LOSE";
                 _PlayerWin.TextColor = (_player == Blue) ? Color.Blue : Color.Crimson;
             }
             else
