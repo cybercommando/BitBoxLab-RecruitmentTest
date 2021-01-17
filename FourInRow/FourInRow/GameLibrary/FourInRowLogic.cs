@@ -22,11 +22,11 @@ namespace FourInRow.GameLibrary
 
         public static bool Drawn(char[,] _board)
         {
-            int boardSize = _board.GetLength(0);
-            bool decision = true;
-            for (int i = 0; i < boardSize; i++)
+            int boardRow = _board.GetLength(0);
+            int boardCol = _board.GetLength(1);
+            for (int i = 0; i < boardRow; i++)
             {
-                for (int j = 0; j < boardSize; j++)
+                for (int j = 0; j < boardCol; j++)
                 {
                     if (_board[i, j] == ' ')
                     {
@@ -34,7 +34,7 @@ namespace FourInRow.GameLibrary
                     }
                 }
             }
-            return decision;
+            return true;
         }
 
         //===========================================================
@@ -42,10 +42,11 @@ namespace FourInRow.GameLibrary
         //===========================================================
         private static bool checkRows(char[,] _board, char player)
         {
-            int boardSize = _board.GetLength(0);
-            for (int row = 0; row < boardSize; row++)
+            int boardRow = _board.GetLength(0);
+            int boardCol = _board.GetLength(1);
+            for (int row = 0; row < boardRow; row++)
             {
-                for (int col = 0; col < boardSize - 3; col++)
+                for (int col = 0; col < boardCol - 3; col++)
                 {
                     if (player == _board[row, col] &&
                         player == _board[row, col + 1] &&
@@ -61,15 +62,16 @@ namespace FourInRow.GameLibrary
 
         private static bool checkColumns(char[,] _board, char player)
         {
-            int boardSize = _board.GetLength(0);
-            for (int row = 0; row < boardSize - 3; row++)
+            int boardRow = _board.GetLength(0);
+            int boardCol = _board.GetLength(1);
+            for (int row = 0; row < boardRow - 3; row++)
             {
-                for (int col = 0; col < boardSize; col++)
+                for (int col = 0; col < boardCol; col++)
                 {
                     if (player == _board[row, col] &&
-                        player == _board[row + 1,col] &&
-                        player == _board[row + 2,col] &&
-                        player == _board[row + 3,col])
+                        player == _board[row + 1, col] &&
+                        player == _board[row + 2, col] &&
+                        player == _board[row + 3, col])
                     {
                         return true;
                     }
@@ -80,10 +82,12 @@ namespace FourInRow.GameLibrary
 
         private static bool checkMainDiagonal(char[,] _board, char player)
         {
-            int boardSize = _board.GetLength(0);
-            for (int row = 0; row < boardSize - 3; row++)
+            int boardRow = _board.GetLength(0);
+            int boardCol = _board.GetLength(1);
+
+            for (int row = 0; row < boardRow - 3; row++)
             {
-                for (int col = 0; col < boardSize - 3; col++)
+                for (int col = 0; col < boardCol - 3; col++)
                 {
                     if (player == _board[row, col] &&
                         player == _board[row + 1, col + 1] &&
@@ -99,10 +103,11 @@ namespace FourInRow.GameLibrary
 
         private static bool checkCounterDiagonal(char[,] _board, char player)
         {
-            int boardSize = _board.GetLength(0);
-            for (int row = 0; row < boardSize - 3; row++)
+            int boardRow = _board.GetLength(0);
+            int boardCol = _board.GetLength(1);
+            for (int row = 0; row < boardRow - 3; row++)
             {
-                for (int col = 3; col < boardSize; col++)
+                for (int col = 3; col < boardCol; col++)
                 {
                     if (player == _board[row, col] &&
                         player == _board[row + 1, col - 1] &&

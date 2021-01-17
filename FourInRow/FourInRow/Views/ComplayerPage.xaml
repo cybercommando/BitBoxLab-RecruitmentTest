@@ -6,7 +6,7 @@
 
         <StackLayout>
             <Frame BackgroundColor="Crimson" Padding="24" CornerRadius="0">
-                <Label Text="Computer vs Player" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+                <Label Text="Computer vs Human" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
             </Frame>
 
             <Grid Grid.Row="0" Margin="10">

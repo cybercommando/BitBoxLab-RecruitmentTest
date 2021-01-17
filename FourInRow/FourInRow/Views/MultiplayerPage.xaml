@@ -5,7 +5,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Frame BackgroundColor="Green" Padding="24" CornerRadius="0">
-                <Label Text="Player vs Player" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+                <Label Text="Human vs Human" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
             </Frame>
 
             <Grid Grid.Row="0" Margin="10">
