@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using FourInRow.Models;
+using FourInRow.Services;
 
 namespace FourInRow.GameLibrary
 {
@@ -19,6 +21,7 @@ namespace FourInRow.GameLibrary
         private bool _won = false;
         private char _player = blank;
         private char _YourColor = blank;
+        private DifficultyLevel _DifficultyLevel = DifficultyLevel.EASY;
         private char[,] _board = new char[size, size];
 
         public void Show(string content, string title)
@@ -72,28 +75,14 @@ namespace FourInRow.GameLibrary
 
         private async void AutoTurnExecute(object sender)
         {
-            int _Row = 0;
-            int _Col = 0;
-            int _Index = 0;
-            do
-            {
-                Random _random = new Random();
-                _Row = _random.Next(0, size - 1);
-                _Col = _random.Next(0, size - 1);
-                _Index = (_Row * size) + _Col;
-
-                if (_board[_Row, _Col] == blank)
-                {
-                    break;
-                }
-            } while (true);
+            var decisionPoint = GridPointDecisionService.GetGridPointDecision(_board, blank, _player, _DifficultyLevel);
 
             if (!_won)
             {
                 Grid element = (Grid)sender;
 
-                int ElemRow = _Row;
-                int ElemCol = _Col;
+                int ElemRow = decisionPoint.GridRow;
+                int ElemCol = decisionPoint.GridCol;
                 int ElemIndex = (ElemRow * size) + ElemCol;
 
                 //Step1: Add Piece
@@ -298,11 +287,12 @@ namespace FourInRow.GameLibrary
             }
         }
 
-        public async void New(ContentPage page, Grid grid, Label playerTurnLabel, Label playerWinLabel)
+        public async void New(ContentPage page, Grid grid, DifficultyLevel difficultyLevel, Label playerTurnLabel, Label playerWinLabel)
         {
             _page = page;
             _PlayerTurn = playerTurnLabel;
             _PlayerWin = playerWinLabel;
+            _DifficultyLevel = difficultyLevel;
             Layout(ref grid);
             _won = false;
             _player = await ConfirmAsync("Choose Your Color", app_title, "Red", "Blue") ? Red : Blue;

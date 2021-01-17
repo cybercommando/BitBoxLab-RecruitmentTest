@@ -1,10 +1,6 @@
 ﻿using FourInRow.GameLibrary;
+using FourInRow.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -22,7 +18,7 @@ namespace FourInRow.Views
 
         private void New_Clicked(object sender, EventArgs e)
         {
-            library.New(this, Display, PlayerTurn, PlayerWin);
+            library.New(this, Display, DifficultyLevel.EASY,PlayerTurn, PlayerWin);
         }
 
         private void Back_Clicked(object sender, EventArgs e)
