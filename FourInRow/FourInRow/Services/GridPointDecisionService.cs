@@ -11,35 +11,40 @@ namespace FourInRow.Services
 
         public static GridPoint GetGridPointDecision(char[,] _board, char _blank, char _player, DifficultyLevel _difficultyLevel)
         {
-            if (_difficultyLevel == DifficultyLevel.EASY)
+            if (_difficultyLevel == DifficultyLevel.BASE)
             {
-                return EasyDicision(_board, _blank);
-            }
-            else if (_difficultyLevel == DifficultyLevel.MEDIUM)
-            {
-                return MediumDicision(_board, _blank, _player);
-            }
-            else if (_difficultyLevel == DifficultyLevel.HARD)
-            {
-                return HardDicision(_board, _blank, _player);
+                return BaseDicision(_board, _blank);
             }
             else
             {
-                return null;
+                GridPoint gp = new GridPoint();
+                int Col = FourInRowMinMax.GetDecision(_board, _player, _difficultyLevel);
+                if (Col >= 0 && Col < _board.GetLength(1))
+                {
+                    gp.GridCol = Col;
+                    gp.GridRow = 0;
+                    gp.GridIndex = (0 * _board.GetLength(1)) + Col;
+                }
+                else
+                {
+                    return null;
+                }
+                return gp;
             }
         }
 
-        private static GridPoint EasyDicision(char[,] _board, char _blank)
+        private static GridPoint BaseDicision(char[,] _board, char _blank)
         {
             int sizeRow = _board.GetLength(0);
+            int sizeCol = _board.GetLength(1);
             int _Row, _Col, _Index;
 
             do
             {
                 Random _random = new Random();
                 _Row = _random.Next(0, sizeRow - 1);
-                _Col = _random.Next(0, sizeRow - 1);
-                _Index = (_Row * sizeRow) + _Col;
+                _Col = _random.Next(0, sizeCol - 1);
+                _Index = (_Row * sizeCol) + _Col;
 
                 if (_board[_Row, _Col] == _blank)
                 {
@@ -56,14 +61,5 @@ namespace FourInRow.Services
             return _gridPoint;
         }
 
-        private static GridPoint MediumDicision(char[,] _board, char _blank, char _player)
-        {
-            return null;
-        }
-
-        private static GridPoint HardDicision(char[,] _board, char _blank, char _player)
-        {
-            return null;
-        }
     }
 }
