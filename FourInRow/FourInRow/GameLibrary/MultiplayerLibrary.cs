@@ -1,4 +1,4 @@
-﻿using FourInRow.GameLibrary;
+﻿using FourInRow.Services;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -12,14 +12,15 @@ namespace FourInRow.GameLibrary
         private const char blank = ' ';
         private const char Red = 'R';
         private const char Blue = 'B';
-        private const int size = 7;
+        private const int sizeCol = 7;
+        private const int sizeRow = 6;
 
         private ContentPage _page;
         private Label _PlayerTurn;
         private Label _PlayerWin;
         private bool _won = false;
         private char _player = blank;
-        private char[,] _board = new char[size, size];
+        private char[,] _board = new char[sizeRow, sizeCol];
 
         public void Show(string content, string title)
         {
@@ -79,7 +80,7 @@ namespace FourInRow.GameLibrary
                 {
                     int ElemRow = (int)element.GetValue(Grid.RowProperty);
                     int ElemCol = (int)element.GetValue(Grid.ColumnProperty);
-                    int ElemIndex = (ElemRow * size) + ElemCol;
+                    int ElemIndex = (ElemRow * sizeCol) + ElemCol;
 
                     //Step1: Add Piece
                     MainThread.BeginInvokeOnMainThread(() =>
@@ -92,8 +93,8 @@ namespace FourInRow.GameLibrary
                     //Step2: Check Next
                     int prevIndex = ElemIndex;
                     int nextElemRow = ElemRow + 1;
-                    int nextIndex = ElemIndex + size;
-                    for (int a = nextElemRow; a < size; a++)
+                    int nextIndex = ElemIndex + sizeCol;
+                    for (int a = nextElemRow; a < sizeRow; a++)
                     {
                         //Checking next in Row (If next already have value then ignore)
                         if (((Grid)((Grid)element.Parent).Children[nextIndex]).Children.Count > 0)
@@ -120,7 +121,7 @@ namespace FourInRow.GameLibrary
                             nextElemRow = a;
                         }
 
-                        nextIndex = nextIndex + size;
+                        nextIndex += sizeCol;
                     }
 
                     //StepLast: Add in Board
@@ -181,15 +182,18 @@ namespace FourInRow.GameLibrary
             _PlayerTurn.Text = "";
             _PlayerWin.Text = "";
             // Setup Grid
-            for (int index = 0; (index < size); index++)
+            for (int index = 0; (index < sizeRow); index++)
             {
                 grid.RowDefinitions.Add(new RowDefinition());
+            }
+            for (int index = 0; (index < sizeCol); index++)
+            {
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
             }
             // Setup Board
-            for (int row = 0; (row < size); row++)
+            for (int row = 0; (row < sizeRow); row++)
             {
-                for (int column = 0; (column < size); column++)
+                for (int column = 0; (column < sizeCol); column++)
                 {
                     Add(ref grid, row, column);
                     _board[row, column] = blank;

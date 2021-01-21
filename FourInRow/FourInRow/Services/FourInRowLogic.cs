@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FourInRow.GameLibrary
+namespace FourInRow.Services
 {
     static class FourInRowLogic
     {

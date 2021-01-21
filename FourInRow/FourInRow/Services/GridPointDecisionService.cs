@@ -13,7 +13,7 @@ namespace FourInRow.Services
         {
             if (_difficultyLevel == DifficultyLevel.EASY)
             {
-                return EasyDicision(_board, _blank, _player);
+                return EasyDicision(_board, _blank);
             }
             else if (_difficultyLevel == DifficultyLevel.MEDIUM)
             {
@@ -29,7 +29,7 @@ namespace FourInRow.Services
             }
         }
 
-        private static GridPoint EasyDicision(char[,] _board, char _blank, char _player)
+        private static GridPoint EasyDicision(char[,] _board, char _blank)
         {
             int sizeRow = _board.GetLength(0);
             int _Row, _Col, _Index;
