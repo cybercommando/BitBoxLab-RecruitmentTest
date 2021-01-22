@@ -18,7 +18,7 @@ namespace FourInRow.Views
 
         private void New_Clicked(object sender, EventArgs e)
         {
-            library.New(this, Display, DifficultyLevel.HARD, PlayerTurn, PlayerWin);
+            library.New(this, Display, DifficultyLevel.MEDIUM, PlayerTurn, PlayerWin);
         }
 
         private void Back_Clicked(object sender, EventArgs e)

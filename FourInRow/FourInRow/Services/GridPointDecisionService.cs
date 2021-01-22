@@ -1,4 +1,5 @@
 ﻿using FourInRow.Models;
+using FourInRow.Services.MinMax;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,8 +18,10 @@ namespace FourInRow.Services
             }
             else
             {
+                FourInRowMinMaxAlphaBeta minmax = new FourInRowMinMaxAlphaBeta();
+
                 GridPoint gp = new GridPoint();
-                int Col = FourInRowMinMax.GetDecision(_board, _player, _difficultyLevel);
+                int Col = minmax.GetDecision(_board, _player, _difficultyLevel);
                 if (Col >= 0 && Col < _board.GetLength(1))
                 {
                     gp.GridCol = Col;
@@ -27,7 +30,7 @@ namespace FourInRow.Services
                 }
                 else
                 {
-                    return null;
+                    return BaseDicision(_board, _blank);
                 }
                 return gp;
             }
