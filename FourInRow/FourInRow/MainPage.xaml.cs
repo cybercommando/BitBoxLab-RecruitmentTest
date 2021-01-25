@@ -28,7 +28,7 @@ namespace FourInRow
 
         private void CvP_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new ComplayerPage();
+            Application.Current.MainPage = new DifficultyPage();
         }
     }
 }

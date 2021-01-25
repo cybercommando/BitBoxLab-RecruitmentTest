@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FourInRow.Models
 {
-    enum DifficultyLevel
+    public enum DifficultyLevel
     {
         BASE = 0,
         EASY = 2,

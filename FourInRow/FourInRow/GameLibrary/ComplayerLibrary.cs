@@ -49,7 +49,7 @@ namespace FourInRow.GameLibrary
             {
                 BoxView Dot = new BoxView()
                 {
-                    Color = Color.Blue,
+                    Color = Color.FromHex("#2196F3"),
                     HeightRequest = 30,
                     WidthRequest = 30,
                     VerticalOptions = LayoutOptions.Center,
@@ -309,7 +309,7 @@ namespace FourInRow.GameLibrary
             if (_player == Blue)
             {
                 _PlayerTurn.Text = "BLUE";
-                _PlayerTurn.BackgroundColor = Color.Blue;
+                _PlayerTurn.BackgroundColor = Color.FromHex("#2196F3");
             }
             else
             {
@@ -323,7 +323,7 @@ namespace FourInRow.GameLibrary
             if (_won)
             {
                 _PlayerWin.Text = (_player == _YourColor) ? "YOU WIN" : "YOU LOSE";
-                _PlayerWin.TextColor = (_player == Blue) ? Color.Blue : Color.Crimson;
+                _PlayerWin.TextColor = (_player == Blue) ? Color.FromHex("#2196F3") : Color.Crimson;
             }
             else
             {
