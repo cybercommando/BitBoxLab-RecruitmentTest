@@ -291,7 +291,7 @@ namespace FourInRow.GameLibrary
             }
         }
 
-        public async void New(ContentPage page, Grid grid, DifficultyLevel difficultyLevel, Label playerTurnLabel, Label playerWinLabel)
+        public void New(ContentPage page, Grid grid, DifficultyLevel difficultyLevel, Label playerTurnLabel, Label playerWinLabel)
         {
             _page = page;
             _PlayerTurn = playerTurnLabel;
@@ -299,7 +299,7 @@ namespace FourInRow.GameLibrary
             _DifficultyLevel = difficultyLevel;
             Layout(ref grid);
             _won = false;
-            _player = await ConfirmAsync("Choose Your Color", app_title, "Red", "Blue") ? Red : Blue;
+            _player = Blue;
             _YourColor = _player;
             PlayerTurnShift();
         }

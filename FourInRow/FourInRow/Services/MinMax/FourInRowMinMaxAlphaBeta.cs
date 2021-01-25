@@ -9,10 +9,11 @@ namespace FourInRow.Services.MinMax
     {
         private const int Rows = 6;
         private const int Cols = 7;
-        //private Move move = new Move();
+        private int iterations;
 
         public int GetDecision(char[,] _board, char _player, DifficultyLevel _difficultyLevel)
         {
+            iterations = 0;
             PlayerEnum player = (_player == 'B') ? PlayerEnum.BLUE : PlayerEnum.RED;
             int Depth = (int)_difficultyLevel;
 
@@ -62,15 +63,17 @@ namespace FourInRow.Services.MinMax
             }
 
             // Column, Score
-            var max = new Move() { Column = -1, Score = alpha };
+            var max = new Move() { Column = -1, Score = -99999 };
 
             // For all possible moves
             for (var column = 0; column < Cols; column++)
             {
-                var new_board = board; // Create new board
+                var new_board = board.CopyBoard(); // Create new board
 
                 if (new_board.Place(column))
                 {
+                    iterations++; //debug
+
                     Move next_move = MinimizePlay(new_board, depth - 1, alpha, beta); // Recursive calling
 
                     // Evaluate new move
@@ -102,14 +105,16 @@ namespace FourInRow.Services.MinMax
             }
 
             // Column, Score
-            var min = new Move() { Column = -1, Score = beta };
+            var min = new Move() { Column = -1, Score = 99999 };
 
             for (var column = 0; column < Cols; column++)
             {
-                var new_board = board;
+                var new_board = board.CopyBoard();
 
                 if (new_board.Place(column))
                 {
+                    iterations++; //debug
+
                     var next_move = MaximizePlay(new_board, depth - 1, alpha, beta);
 
                     if (min.Column == -1 || next_move.Score < min.Score)

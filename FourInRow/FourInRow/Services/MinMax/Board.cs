@@ -205,5 +205,21 @@ namespace FourInRow.Services.MinMax
             }
             return true;
         }
+
+        public Board CopyBoard()
+        {
+            int[,] newField = new int[6, 7];
+            for (int r = 0; r < 6; r++)
+            {
+                for (int c = 0; c < 7; c++)
+                {
+                    newField[r, c] = Field[r, c];
+                }
+            }
+
+            int _player = (this.Player == (int)PlayerEnum.BLUE) ? (int)PlayerEnum.BLUE : (int)PlayerEnum.RED;
+
+            return new Board(newField, _player);
+        }
     }
 }
