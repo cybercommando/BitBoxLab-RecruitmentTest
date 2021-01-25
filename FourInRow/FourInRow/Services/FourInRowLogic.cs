@@ -1,26 +1,38 @@
-﻿using System;
+﻿using FourInRow.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FourInRow.Services
 {
-    static class FourInRowLogic
+    class FourInRowLogic
     {
+        private char[,] _board = new char[6, 7];
+
+        private char player;
+
+        private List<GridPoint> WinningSequence = new List<GridPoint>();
+
+        public FourInRowLogic(char[,] _board, char _player)
+        {
+            this._board = _board;
+            this.player = _player;
+        }
 
         //===========================================================
         // Game Decision
         //===========================================================
 
-        public static bool Winner(char[,] _board, char player)
+        public bool Winner()
         {
             return
-                checkRows(_board, player)
-                || checkColumns(_board, player)
-                || checkMainDiagonal(_board, player)
-                || checkCounterDiagonal(_board, player);
+                checkRows()
+                || checkColumns()
+                || checkMainDiagonal()
+                || checkCounterDiagonal();
         }
 
-        public static bool Drawn(char[,] _board)
+        public bool Drawn()
         {
             int boardRow = _board.GetLength(0);
             int boardCol = _board.GetLength(1);
@@ -37,10 +49,19 @@ namespace FourInRow.Services
             return true;
         }
 
+        public IEnumerable<GridPoint> GetWinningSequence()
+        {
+            if (Winner())
+            {
+                return WinningSequence;
+            }
+            return null;
+        }
+
         //===========================================================
         // Game Logic
         //===========================================================
-        private static bool checkRows(char[,] _board, char player)
+        private bool checkRows()
         {
             int boardRow = _board.GetLength(0);
             int boardCol = _board.GetLength(1);
@@ -53,6 +74,17 @@ namespace FourInRow.Services
                         player == _board[row, col + 2] &&
                         player == _board[row, col + 3])
                     {
+                        WinningSequence = new List<GridPoint>();
+                        for (int i = 0; i < 4; i++)
+                        {
+                            GridPoint gp = new GridPoint()
+                            {
+                                GridCol = col + i,
+                                GridRow = row,
+                                GridIndex = (row * 7) + (col + i)
+                            };
+                            WinningSequence.Add(gp);
+                        }
                         return true;
                     }
                 }
@@ -60,7 +92,7 @@ namespace FourInRow.Services
             return false;
         }
 
-        private static bool checkColumns(char[,] _board, char player)
+        private bool checkColumns()
         {
             int boardRow = _board.GetLength(0);
             int boardCol = _board.GetLength(1);
@@ -73,6 +105,17 @@ namespace FourInRow.Services
                         player == _board[row + 2, col] &&
                         player == _board[row + 3, col])
                     {
+                        WinningSequence = new List<GridPoint>();
+                        for (int i = 0; i < 4; i++)
+                        {
+                            GridPoint gp = new GridPoint()
+                            {
+                                GridCol = col,
+                                GridRow = row + i,
+                                GridIndex = ((row + i) * 7) + col
+                            };
+                            WinningSequence.Add(gp);
+                        }
                         return true;
                     }
                 }
@@ -80,7 +123,7 @@ namespace FourInRow.Services
             return false;
         }
 
-        private static bool checkMainDiagonal(char[,] _board, char player)
+        private bool checkMainDiagonal()
         {
             int boardRow = _board.GetLength(0);
             int boardCol = _board.GetLength(1);
@@ -94,6 +137,17 @@ namespace FourInRow.Services
                         player == _board[row + 2, col + 2] &&
                         player == _board[row + 3, col + 3])
                     {
+                        WinningSequence = new List<GridPoint>();
+                        for (int i = 0; i < 4; i++)
+                        {
+                            GridPoint gp = new GridPoint()
+                            {
+                                GridCol = col + i,
+                                GridRow = row + i,
+                                GridIndex = ((row + i) * 7) + (col + i)
+                            };
+                            WinningSequence.Add(gp);
+                        }
                         return true;
                     }
                 }
@@ -101,7 +155,7 @@ namespace FourInRow.Services
             return false;
         }
 
-        private static bool checkCounterDiagonal(char[,] _board, char player)
+        private bool checkCounterDiagonal()
         {
             int boardRow = _board.GetLength(0);
             int boardCol = _board.GetLength(1);
@@ -114,6 +168,17 @@ namespace FourInRow.Services
                         player == _board[row + 2, col - 2] &&
                         player == _board[row + 3, col - 3])
                     {
+                        WinningSequence = new List<GridPoint>();
+                        for (int i = 0; i < 4; i++)
+                        {
+                            GridPoint gp = new GridPoint()
+                            {
+                                GridCol = col - i,
+                                GridRow = row + i,
+                                GridIndex = ((row + i) * 7) + (col - i)
+                            };
+                            WinningSequence.Add(gp);
+                        }
                         return true;
                     }
                 }

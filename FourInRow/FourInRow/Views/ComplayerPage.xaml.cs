@@ -48,12 +48,12 @@ namespace FourInRow.Views
 
         private void New_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new MainPage();
+            Application.Current.MainPage = new DifficultyPage();
         }
 
         private void Back_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new DifficultyPage();
+            Application.Current.MainPage = new MainPage();
         }
     }
 }

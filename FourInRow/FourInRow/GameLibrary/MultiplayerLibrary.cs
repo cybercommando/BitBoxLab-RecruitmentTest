@@ -131,13 +131,18 @@ namespace FourInRow.GameLibrary
                         _board[nextElemRow, ElemCol] = _player;
 
                     //-----------------------------------------------------------------------
-                    if (FourInRowLogic.Winner(_board, _player))
+                    FourInRowLogic fourInRowLogic = new FourInRowLogic(_board, _player);
+                    if (fourInRowLogic.Winner())
                     {
+                        foreach (var item in fourInRowLogic.GetWinningSequence())
+                        {
+                            ((Grid)((Grid)element.Parent).Children[item.GridIndex]).BackgroundColor = Color.Yellow;
+                        }
                         _won = true;
                         Show($"{_player} wins!", app_title);
                         PlayerWinningStatus();
                     }
-                    else if (FourInRowLogic.Drawn(_board))
+                    else if (fourInRowLogic.Drawn())
                     {
                         Show("Draw!", app_title);
                         PlayerWinningStatus();
