@@ -20,6 +20,7 @@ namespace FourInRow.GameLibrary
         private Label _PlayerTurn;
         private Label _PlayerWin;
         private bool _won = false;
+        private bool _AIThninking = false;
         private char _player = blank;
         private char _YourColor = blank;
         private DifficultyLevel _DifficultyLevel = DifficultyLevel.EASY;
@@ -162,10 +163,16 @@ namespace FourInRow.GameLibrary
                 Show("Game Over!", app_title);
             }
 
+            _AIThninking = false;
         }
 
         private async void Grid_Tapped(object sender, EventArgs e)
         {
+            if (_AIThninking)
+            {
+                return;
+            }
+            _AIThninking = true;
             if (!_won)
             {
                 Grid element = (Grid)sender;
@@ -245,6 +252,8 @@ namespace FourInRow.GameLibrary
                         _player = (_player == Blue ? Red : Blue); // Swap Players
                         PlayerTurnShift();
                         await Task.Delay(100);
+
+                       
                         AutoTurnExecute(sender);
                     }
                 }
@@ -318,12 +327,12 @@ namespace FourInRow.GameLibrary
         {
             if (_player == Blue)
             {
-                _PlayerTurn.Text = "BLUE";
+                _PlayerTurn.Text = "YOU";
                 _PlayerTurn.BackgroundColor = Color.FromHex("#2196F3");
             }
             else
             {
-                _PlayerTurn.Text = "RED";
+                _PlayerTurn.Text = "Thinking...";
                 _PlayerTurn.BackgroundColor = Color.Crimson;
             }
         }
@@ -334,6 +343,10 @@ namespace FourInRow.GameLibrary
             {
                 _PlayerWin.Text = (_player == _YourColor) ? "YOU WIN" : "YOU LOSE";
                 _PlayerWin.TextColor = (_player == Blue) ? Color.FromHex("#2196F3") : Color.Crimson;
+                if (_player == Red)
+                {
+                    _PlayerTurn.Text = "Computer";
+                }
             }
             else
             {
