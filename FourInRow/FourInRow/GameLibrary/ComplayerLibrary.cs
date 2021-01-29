@@ -310,7 +310,7 @@ namespace FourInRow.GameLibrary
             }
         }
 
-        public void New(ContentPage page, Grid grid, DifficultyLevel difficultyLevel, Label playerTurnLabel, Label playerWinLabel)
+        public async void New(ContentPage page, Grid grid, DifficultyLevel difficultyLevel, Label playerTurnLabel, Label playerWinLabel)
         {
             _page = page;
             _PlayerTurn = playerTurnLabel;
@@ -320,6 +320,16 @@ namespace FourInRow.GameLibrary
             _won = false;
             _player = Blue;
             _YourColor = _player;
+
+            var x = await ConfirmAsync("Who goes First?", app_title, "You", "Computer") ? 1 : 2;
+
+            if (x == 2)
+            {
+                _player = Red;
+                AutoTurnExecute(grid.Children[0]);
+                PlayerTurnShift();
+            }
+
             PlayerTurnShift();
         }
 

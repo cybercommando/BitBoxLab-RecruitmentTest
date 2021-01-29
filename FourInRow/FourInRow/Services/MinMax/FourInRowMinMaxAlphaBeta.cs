@@ -13,15 +13,24 @@ namespace FourInRow.Services.MinMax
 
         private List<int> PossibleNonWinningMoves = new List<int>();
         private List<int> OpponentWinningMoves = new List<int>();
+        private List<int> MyWinningMoves = new List<int>();
 
         public int GetDecision(char[,] _board, char _player, DifficultyLevel _difficultyLevel)
         {
-            var winningmoves = getOpponentWinningMoves(_board, _player);
+            var winningmoves_opp = getOpponentWinningMoves(_board, _player);
 
             //Block winning Move
-            if (winningmoves.Count > 0)
+            if (winningmoves_opp.Count > 0)
             {
-                return winningmoves[0];
+                return winningmoves_opp[0];
+            }
+            //------------------
+
+            //Identifying My winning move
+            var winningmoves_my = getMyWinningMoves(_board, _player);
+            if (winningmoves_my.Count > 0)
+            {
+                return winningmoves_my[0];
             }
             //------------------
 
@@ -143,9 +152,62 @@ namespace FourInRow.Services.MinMax
             return min;
         }
 
-        private List<int> getPossibleNonWinningMoves()
+        private List<int> getPossibleNonWinningMoves(char[,] _board, char _player)
         {
-            return null;
+            var tempBoard = new char[6, 7];
+
+            for (int xr = 0; xr < _board.GetLength(0); xr++)
+            {
+                for (int xc = 0; xc < _board.GetLength(1); xc++)
+                {
+                    tempBoard[xr, xc] = _board[xr, xc];
+                }
+            }
+
+            for (int c = 0; c < _board.GetLength(1); c++)
+            {
+                if (tempBoard[0, c] != ' ')
+                {
+                    continue;
+                }
+
+                int tempR = -1;
+
+                for (int r = _board.GetLength(0) - 1; r >= 0; r--)
+                {
+                    if (tempBoard[r, c] == ' ')
+                    {
+                        tempBoard[r, c] = _player;
+                        tempR = r;
+                        break;
+                    }
+                }
+
+                char opponentPlayer = (_player == 'B') ? 'R' : 'B';
+
+                if (tempR > 0)
+                {
+                    tempBoard[tempR - 1, c] = opponentPlayer;
+                }
+                else
+                {
+                    PossibleNonWinningMoves.Add(c);
+                    tempBoard[tempR, c] = ' ';
+                    continue;
+                }
+
+                FourInRowLogic fourInRowLogic = new FourInRowLogic(tempBoard, opponentPlayer);
+                if (!fourInRowLogic.Winner())
+                {
+                    PossibleNonWinningMoves.Add(c);
+                }
+
+                tempBoard[tempR, c] = ' ';
+                tempBoard[tempR - 1, c] = ' ';
+
+            }
+
+            return PossibleNonWinningMoves;
         }
 
         private List<int> getOpponentWinningMoves(char[,] _board, char _player)
@@ -184,6 +246,43 @@ namespace FourInRow.Services.MinMax
                 }
             }
             return OpponentWinningMoves;
+        }
+
+        private List<int> getMyWinningMoves(char[,] _board, char _player)
+        {
+            for (int c = 0; c < _board.GetLength(1); c++)
+            {
+                if (_board[0, c] != ' ')
+                {
+                    continue;
+                }
+
+                var tempBoard = new char[6, 7];
+
+                for (int xr = 0; xr < _board.GetLength(0); xr++)
+                {
+                    for (int xc = 0; xc < _board.GetLength(1); xc++)
+                    {
+                        tempBoard[xr, xc] = _board[xr, xc];
+                    }
+                }
+
+                for (int r = _board.GetLength(0) - 1; r >= 0; r--)
+                {
+                    if (tempBoard[r, c] == ' ')
+                    {
+                        tempBoard[r, c] = _player;
+                        break;
+                    }
+                }
+
+                FourInRowLogic fourInRowLogic = new FourInRowLogic(tempBoard, _player);
+                if (fourInRowLogic.Winner())
+                {
+                    MyWinningMoves.Add(c);
+                }
+            }
+            return MyWinningMoves;
         }
 
     }
