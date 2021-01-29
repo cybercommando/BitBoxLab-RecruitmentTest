@@ -11,8 +11,21 @@ namespace FourInRow.Services.MinMax
         private const int Cols = 7;
         private int iterations;
 
+        private List<int> PossibleNonWinningMoves = new List<int>();
+        private List<int> OpponentWinningMoves = new List<int>();
+
         public int GetDecision(char[,] _board, char _player, DifficultyLevel _difficultyLevel)
         {
+            var winningmoves = getOpponentWinningMoves(_board, _player);
+
+            //Block winning Move
+            if (winningmoves.Count > 0)
+            {
+                return winningmoves[0];
+            }
+            //------------------
+
+
             iterations = 0;
             PlayerEnum player = (_player == 'B') ? PlayerEnum.BLUE : PlayerEnum.RED;
             int Depth = (int)_difficultyLevel;
@@ -23,7 +36,7 @@ namespace FourInRow.Services.MinMax
                 for (int c = 0; c < 7; c++)
                 {
                     int v;
-                    if (_board[r,c] == 'R')
+                    if (_board[r, c] == 'R')
                     {
                         v = (int)PlayerEnum.RED;
                     }
@@ -48,7 +61,7 @@ namespace FourInRow.Services.MinMax
             return move.Column;
         }
 
-        private Move MaximizePlay(Board board,int depth, int alpha, int beta)
+        private Move MaximizePlay(Board board, int depth, int alpha, int beta)
         {
             // Call score of our board
             var score = board.GetScore();
@@ -63,7 +76,7 @@ namespace FourInRow.Services.MinMax
             }
 
             // Column, Score
-            var max = new Move() { Column = -1, Score = -99999 };
+            var max = new Move() { Column = -1, Score = -100000 };
 
             // For all possible moves
             for (var column = 0; column < Cols; column++)
@@ -105,7 +118,7 @@ namespace FourInRow.Services.MinMax
             }
 
             // Column, Score
-            var min = new Move() { Column = -1, Score = 99999 };
+            var min = new Move() { Column = -1, Score = 100000 };
 
             for (var column = 0; column < Cols; column++)
             {
@@ -129,5 +142,49 @@ namespace FourInRow.Services.MinMax
             }
             return min;
         }
+
+        private List<int> getPossibleNonWinningMoves()
+        {
+            return null;
+        }
+
+        private List<int> getOpponentWinningMoves(char[,] _board, char _player)
+        {
+            char player = (_player == 'B') ? 'R' : 'B';
+            for (int c = 0; c < _board.GetLength(1); c++)
+            {
+                if (_board[0, c] != ' ')
+                {
+                    continue;
+                }
+
+                var tempBoard = new char[6, 7];
+
+                for (int xr = 0; xr < _board.GetLength(0); xr++)
+                {
+                    for (int xc = 0; xc < _board.GetLength(1); xc++)
+                    {
+                        tempBoard[xr, xc] = _board[xr, xc];
+                    }
+                }
+
+                for (int r = _board.GetLength(0) - 1; r >= 0; r--)
+                {
+                    if (tempBoard[r, c] == ' ')
+                    {
+                        tempBoard[r, c] = player;
+                        break;
+                    }
+                }
+
+                FourInRowLogic fourInRowLogic = new FourInRowLogic(tempBoard, player);
+                if (fourInRowLogic.Winner())
+                {
+                    OpponentWinningMoves.Add(c);
+                }
+            }
+            return OpponentWinningMoves;
+        }
+
     }
 }
